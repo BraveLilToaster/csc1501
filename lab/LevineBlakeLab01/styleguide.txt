@@ -1,0 +1,54 @@
+1. Column Width
+        No line shall excede 70 characters in length .
+        /* Maximum Line Length - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+2. Comments for functions will precede the definition in the following format
+
+/* *
+* < summary >
+*
+* @param < argument 1 > - description
+* @param < argument 2 > - description
+*
+* @return description ( if applicable )
+*/
+
+/* *
+* Returns the sum of two integers
+*
+* @param a - One of the terms being summed .
+* @param b - One of the terms being summed .
+*
+* @return the sum of a and b
+*/
+int sum (int a , int b ) {
+        return ( a + b );
+}
+
+3. Logical blocks will be indented with tabs, set at an 8 character
+tab - stop. Continuation lines will be indented with 4 space
+characters. Except when aligning extraction and insertion operators.
+
+int main () {
+        /* ... */
+        if ( x > 10) {
+                /* Aligning insertion */
+                cout << " x is greater than ten , how does ten "
+                    << " feel about that ? " << endl ;
+        }
+        if ( y > 10) {
+                t h i s \ _really \ _long \ _variable =
+                    another \ _really \ _long \ _variable + 12345678;
+        }
+        /* ... */
+
+4. Curly braces begin on the line f o r the block they are associated
+with .
+        if ( x && y ) {
+                /* Good ! */
+        }
+        if ( x && y )
+        {
+                /* Bad . */
+        }
+
