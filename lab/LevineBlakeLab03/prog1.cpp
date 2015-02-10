@@ -29,22 +29,25 @@ A reminder, N() indicates the SIZE of the resulting set. So if you have a set su
 
  */
 #include <iostream>
+#include <array>
 using namespace std;
 
 void uni(int a1[], int a2[], int o[]);
+void merge(int a[], int b[], int o[]);
 void intert(int a1[], int a2[], int o[]);
 void notx(int a1[], int o[]);
 void printans(int o[]);
+void printanslength(int o[]);
 
 //the Omega array
 int o[10];
 int temp1[10];
 int temp2[10];
 //the other arrays
-int a[11] = {1,2,3,4,5,6,7,8,9,10,-1};
-int b[6] = {2,4,6,8,10,-1};
-int c[6] = {1,3,5,7,9,-1};
-int d[6] = {1,2,3,5,7,-1};
+int a[10] = {1,2,3,4,5,6,7,8,9,10};
+int b[5] = {2,4,6,8,10};
+int c[5] = {1,3,5,7,9};
+int d[5] = {1,2,3,5,7};
 
 int main(){
 
@@ -55,8 +58,8 @@ int main(){
 
     //Problem 2.) ( B U C ) n  A
     cout << "Problem 2: ";
-    uni(b, c, temp);
-    intert(temp1, a, o);
+    merge(b, c, o);
+    //intert(temp1, a, o);
     printans(o);
         
     //Problem 3.) (!C U  C) n  A
@@ -73,22 +76,26 @@ int main(){
         
     //Problem 5.) N(!A U ( C U  D))
     cout << "Problem 5: ";
-    intert(a, d, o);
-    printans(o);
+    uni(c, d, temp1);
+    notx(a, temp2);
+    uni(temp2, temp1, o);
+    printanslength(o);
         
     //Problem 6.) B n C
     cout << "Problem 6: ";
-    intert(a, d, o);
+    intert(b, c, o);
     printans(o);
         
     //Problem 7.) N(B n  C)
     cout << "Problem 7: ";
-    intert(a, d, o);
-    printans(o);
+    intert(b, c, o);
+    printanslength(o);
     
     //Problem 8.) A U  B U  C U  D
     cout << "Problem 8: ";
-    intert(a, d, o);
+    uni(a, b, temp1);
+    uni(temp1, c, temp2);
+    uni(temp2, d, o);
     printans(o);
 }
 
@@ -98,25 +105,84 @@ void uni(int a1[], int a2[], int o[]){
     int j = 0;
     int k = 0;
     while (k < 10){
-        if(a1[i] > a2[j]){
+        if(a1[i] < a2[j]){
             if(a1[i] == -1) continue;
             o[k] = a1[i];
             i++;
             k++;
         }
-        else if(a1[i] < a2[j]) {
+        else {
             o[k] = a2[j];
             j++;
             k++;
         }
-        else {
-            o[j] = a2[j];
-            i++;
-            k++;
-        }
     }
 }
+void merge(int a[], int b[], int o[]) {
+      int i, j, k;
+      i = 0;
+      j = 0;
+      k = 0;
+      int m = a.size();
+      int n = b.size();
+	cout << " m is " << m << endl;
+	cout << " n is " << n << endl;
+      while (i < m && j < n) {
+            if (a[i] <= b[j]) {
+                  o[k] = a[i];
+                  i++;
+            } else {
+                  o[k] = b[j];
+                  j++;
+            }
+            k++;
+      }
+      if (i < m) {
+            for (int p = i; p < m; p++) {
+                  o[k] = a[p];
+                  k++;
+            }
+      } else {
+            for (int p = j; p < n; p++) {
+                  o[k] = b[p];
+                  k++;
+            }
+      }
+}
 
+/*
+void uni(int a1[], int a2[], int o[]){
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int m = ((sizeof(a1) /sizeof(a1[0]))) ;
+    int n = ((sizeof(a2) / sizeof(a2[0]))) ;
+    while (i < m && j < n){
+        if(a1[i] <= a2[j]){
+            if(a1[i] == -1) continue;
+            o[k] = a1[i];
+            i++;
+        }
+        else {
+            o[k] = a2[j];
+            j++;
+        }
+        k++;
+    }
+    if(i < m) { 
+	for (int q = i; q < m; q++) {
+	    o[k] = a[q];
+	    k++;
+	}
+    }
+    else {
+	for (int q = j; q < n; q++) {
+	    o[k] = a[q];
+	    k++;
+	}
+    }
+}
+*/
 //print, then clear the omega array and temp array
 void printans(int o[]) {
     for(int i=0; i<10; i++){
@@ -128,17 +194,24 @@ void printans(int o[]) {
     cout << endl << endl;
     for(int i = 0; i < 10; i++){
         o[i] = 0;
-        temp[i] = 0;
+        temp1[i] = 0;
+        temp2[i] = 0;
+    }
+}
+void printanslength(int o[]) {
+    cout << o.size() << endl;
+    for(int i = 0; i < 10; i++){
+        o[i] = 0;
+        temp1[i] = 0;
+        temp2[i] = 0;
     }
 }
 
 //intersect function
 void intert(int a1[], int a2[], int o[]){
     for(int j = 0; j < 10; j++){
-        if(a1[j] == -1) break;
         for(int i = 0; i < 10; i ++){
-            if(a2[i] == -1) break;
-            else if(a1[j] == a2[i]){
+            if(a1[j] == a2[i]){
                 o[j] = a1[j];
             }
         }
@@ -148,8 +221,7 @@ void intert(int a1[], int a2[], int o[]){
 //not function
 void notx(int a1[], int o[]){
     for(int j = 0; j < 10; j++){
-        if(a1[j] == -1) break;
-        else if(o[j] == a1[j]){
+        if(o[j] == a1[j]){
             o[j] = 0;
         }
     }        
